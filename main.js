@@ -7,8 +7,9 @@ function createMainWindow() {
         width: 500,
         height: 600,
     })
+    mainWindow.loadURL(`file://${__dirname}/app/index.html`)
+
 }
 
-console.log('hello world');
 
 app.on('ready', createMainWindow)
