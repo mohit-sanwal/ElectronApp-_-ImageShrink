@@ -1,4 +1,4 @@
-const {app, BrowserWindow, Menu} = require('electron')
+const {app, BrowserWindow, Menu, globalShortcut} = require('electron')
 
 process.env.NODE_ENV = 'development';
 
@@ -11,6 +11,7 @@ function createWindow() {
         title: 'ImageShrink',
         width: 500,
         height: 600,
+        backgroundColor: 'red',
         icon: './assets/Icon_256x256.png',
         resizable: isDev ? true : false,
     })
@@ -21,6 +22,9 @@ function createWindow() {
 
 app.whenReady().then(() => {
     createWindow();
+    globalShortcut.register('CmdOrCtrl+R', ()=> mainWindow.reload());
+    globalShortcut.register(isMac ? 'Command+Alt+I': 'Ctrl+Shift+I', ()=> mainWindow.toggleDevTools());
+
     const mainMenu = Menu.buildFromTemplate(menu)
     Menu.setApplicationMenu(mainMenu);
     app.on('activate', () => {
