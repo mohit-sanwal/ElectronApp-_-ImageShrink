@@ -1,0 +1,15 @@
+{
+  "name": "electrondev",
+  "version": "1.0.0",
+  "description": "appTo optimize images",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "mohit sanwal",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^25.2.0"
+  }
+}
