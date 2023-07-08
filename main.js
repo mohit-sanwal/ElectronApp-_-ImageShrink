@@ -37,20 +37,32 @@ app.whenReady().then(() => {
 const menu = [
     ...(isMac ? [{role: 'appMenu'}]: []),
     {
-        label: 'File',
+        // label: 'File',
+        // submenu: [
+        //     {
+        //         label: 'Quit',
+        //         // accelerator: isMac ? 'Command+W' : 'Ctrl+W',
+        //         accelerator: 'CmdOrCtrl+W',
+        //         click: () => app.quit()
+        //     },
+        //     {
+        //         label: 'stay',
+        //         click: () => app.quit()
+        //     }
+        // ]
+
+        // the above code can be replaceble by below line
+        role: 'fileMenu'
+    },
+    ...(isDev ? [{
+        label: 'Dev',
         submenu: [
-            {
-                label: 'Quit',
-                // accelerator: isMac ? 'Command+W' : 'Ctrl+W',
-                accelerator: 'CmdOrCtrl+W',
-                click: () => app.quit()
-            },
-            {
-                label: 'stay',
-                click: () => app.quit()
-            }
+            {role : 'reload'},
+            {role : 'forcereload'},
+            {type : 'separator'},
+            {role : 'toggledevtools'},
         ]
-    }
+    }] : [])
 ]
 
 
