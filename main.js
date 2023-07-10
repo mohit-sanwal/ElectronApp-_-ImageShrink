@@ -147,6 +147,7 @@ async function shrinkImage({imgPath, quality, dest}) {
     console.log('files', files)
     if (files.length) {
        shell.openPath(dest)
+       mainWindow.webContents.send('image:done')
     }
   } catch (err){
     console.log(err)
