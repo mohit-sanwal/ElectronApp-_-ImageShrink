@@ -1,4 +1,21 @@
-const {app, BrowserWindow, Menu, globalShortcut} = require('electron')
+const path = require('path')
+// import path from 'node:path';
+// import * as path from 'path'
+const os = require('os')
+// import os from 'os';
+const {app, BrowserWindow, Menu, globalShortcut, ipcMain, shell } = require('electron')
+// import {app, BrowserWindow, Menu, globalShortcut, ipcMain, shell} from 'electron';
+
+// import imagemin from 'imagemin';
+// import imageminJpegtran from 'imagemin-jpegtran';
+// import imageminPngquant from 'imagemin-pngquant';
+// import slash from 'slash';
+
+const imagemin = require('imagemin')
+const imageminMozjpeg = require('imagemin-mozjpeg')
+const imageminJpegtran = require('imagemin-jpegtran')
+const imageminPngquant = require('imagemin-pngquant')
+const slash = require('slash')
 
 process.env.NODE_ENV = 'development';
 
@@ -89,6 +106,52 @@ const menu = [
     }
 ]
 
+ipcMain.on('image:minimize', async (e, imageData)=> {
+  console.log('os.homedir()', os.homedir())
+  imageData.dest = path.join(os.homedir(), 'Downloads/minimizeImage')
+  console.log('data', imageData)
+  const {imgPath, quality, dest} = imageData
+    try {
+      const pngQuality = quality / 100
+  const files = await imagemin([slash(imgPath)], {
+        destination: dest,
+        Plugins: [
+          imageminMozjpeg({ quality: 50}),
+          imageminPngquant({
+            quality: [pngQuality, pngQuality]
+          })
+        ]
+      })
+      console.log('files', files)
+      if (files.length) {
+         shell.openPath(dest)
+      }
+    } catch (err){
+      console.log(err)
+    }
+  })
+
+async function shrinkImage({imgPath, quality, dest}) {
+  try {
+    console.log('slash(dest)', slash(dest))
+    const pngQuality = quality / 100
+    const files = await imagemin([slash(imgPath)], {
+      destination: dest,
+      Plugins: [
+        imageminMozjpeg({ quality: 50}),
+        imageminPngquant({
+          quality: [pngQuality, pngQuality]
+        })
+      ]
+    })
+    console.log('files', files)
+    if (files.length) {
+       shell.openPath(dest)
+    }
+  } catch (err){
+    console.log(err)
+  }
+}
 
 app.on('window-all-closed', () => {
     if (process.platform !== 'darwin') {
